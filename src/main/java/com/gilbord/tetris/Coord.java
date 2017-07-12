@@ -12,6 +12,19 @@ public class Coord {
         this.y = y;
     }
 
+    public Coord(Coord coord){
+        this.x = coord.getX();
+        this.y = coord.getY();
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
     public int getX() {
         return x;
     }
