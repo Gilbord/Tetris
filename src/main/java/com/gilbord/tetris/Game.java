@@ -14,11 +14,7 @@ public class Game extends JFrame {
     private TetrisFigure tetrisFigure;
     private TetrisField tetrisField;
     private PaintPanel paintPanel;
-    private final int SHOW_DELAY = 400;
-    final int LEFT = 37; // key codes
-    final int UP = 38;
-    final int RIGHT = 39;
-    final int DOWN = 40;
+    private boolean isGameOver = false;
 
 
     public Game() {
@@ -29,45 +25,43 @@ public class Game extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setBounds(100, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
         paintPanel.setBackground(Color.white); // define the background color
-        addKeyListener(new KeyAdapter() {
-            public void keyPressed(KeyEvent e) {
-                // if (!gameOver) {
-                //if (e.getKeyCode() == DOWN) tetrisFigure.drop();
-                //if (e.getKeyCode() == UP) figure.rotate();
-                if (e.getKeyCode() == LEFT){
-                    if(tetrisField.canShift(tetrisFigure, Direction.LEFT)){
-                        tetrisFigure.shift(Direction.LEFT);
-                    }
-                }
-                if (e.getKeyCode() == RIGHT){
-                    if(tetrisField.canShift(tetrisFigure, Direction.RIGHT)){
-                        tetrisFigure.shift(Direction.RIGHT);
-                    }
-                }
-                // }*/
-                paintPanel.repaint();
-            }
-        });
+        addKeyListener(new KeyListener(this));
         add(BorderLayout.CENTER, paintPanel);
         setVisible(true);
     }
 
-    void go() {
-        while (true) {
+    public void start() {
+        while (!isGameOver) {
             try {
-                Thread.sleep(SHOW_DELAY);
+                Thread.sleep(Constants.DELAY);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            tetrisField.update();
             paintPanel.repaint();
-            //checkFilling();
             if (!tetrisField.canFall(tetrisFigure)) {
                 tetrisField.addFigure(tetrisFigure);
                 tetrisFigure = new TetrisFigure();
+                if(!tetrisField.canFall(tetrisFigure)){
+                    isGameOver = true;
+                    System.out.println("Game over");
+                }
                 paintPanel.setTetrisFigure(tetrisFigure);
                 //gameOver = figure.isCrossGround(); // Is there space for a new figure?
             } else
                 tetrisFigure.fall();
         }
+    }
+
+    public TetrisFigure getTetrisFigure() {
+        return tetrisFigure;
+    }
+
+    public TetrisField getTetrisField() {
+        return tetrisField;
+    }
+
+    public PaintPanel getPaintPanel() {
+        return paintPanel;
     }
 }
