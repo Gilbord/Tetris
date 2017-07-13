@@ -27,13 +27,14 @@ public class TetrisFigure {
         this.rotationMode = RotationMode.NORMAL;
         this.currentFigure = new FormBuilder().generateFigure(new Coord(Constants.START_X, Constants.START_Y),
                 this.currentFigureType,
-                this.rotationMode);
+                RotationMode.NORMAL);
         this.nextFigure = new FormBuilder().generateFigure(new Coord(Constants.NEXT_START_X, Constants.NEXT_START_Y),
                 this.nextFigureType,
-                this.rotationMode);
+                RotationMode.NORMAL);
     }
 
     public void create() {
+        this.rotationMode = RotationMode.NORMAL;
         this.currentColor = nextColor;
         this.nextColor = new Color(new Random().nextInt(200) + 20,
                 new Random().nextInt(200) + 20,
@@ -42,10 +43,10 @@ public class TetrisFigure {
         this.nextFigureType = FigureType.getRandomFigureType();
         this.currentFigure = new FormBuilder().generateFigure(new Coord(Constants.START_X, Constants.START_Y),
                 this.currentFigureType,
-                this.rotationMode);
+                RotationMode.NORMAL);
         this.nextFigure = new FormBuilder().generateFigure(new Coord(Constants.NEXT_START_X, Constants.NEXT_START_Y),
                 this.nextFigureType,
-                this.rotationMode);
+                RotationMode.NORMAL);
     }
 
     public void fall() {
