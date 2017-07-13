@@ -1,8 +1,6 @@
 package com.gilbord.graphics;
 
-import com.gilbord.tetris.TetrisField;
-import com.gilbord.tetris.TetrisFigure;
-
+import com.gilbord.tetris.*;
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,27 +8,26 @@ import java.awt.*;
  * Created by Gilbord on 12.07.2017.
  */
 public class PaintPanel extends JPanel {
-    private TetrisField tetrisField;
-    private TetrisFigure tetrisFigure;
+    private Game game;
+    private Label score;
 
-    public PaintPanel(TetrisField tetrisField, TetrisFigure tetrisFigure) {
-        this.tetrisField = tetrisField;
-        this.tetrisFigure = tetrisFigure;
-    }
+    public PaintPanel(Game game) {
+        this.score = new Label(Constants.SCORE_TEXT + game.getScore());
 
-    public void setTetrisField(TetrisField tetrisField) {
-        this.tetrisField = tetrisField;
-    }
+        this.score.setBounds(Constants.NUM_OF_CELLS_X * Constants.SIZE_OF_THE_CELL + Constants.SPACE_FOR_INFO_X,
+                Constants.SPACE_FOR_INFO_Y,
+                Constants.WIDTH_FOR_INFO,
+                Constants.HEIGHT_FOR_INFO);
 
-    public void setTetrisFigure(TetrisFigure tetrisFigure) {
-        this.tetrisFigure = tetrisFigure;
+        this.add(score);
+        this.game = game;
     }
 
     @Override
-    public void paint(Graphics g){
+    public void paint(Graphics g) {
         super.paint(g);
-        tetrisFigure.draw(g);
-        tetrisField.draw(g);
-
+        this.game.getTetrisFigure().draw(g);
+        this.game.getTetrisField().draw(g);
+        this.score.setText(Constants.SCORE_TEXT + game.getScore());
     }
 }

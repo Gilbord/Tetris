@@ -14,26 +14,30 @@ public class Game extends JFrame {
     private TetrisFigure tetrisFigure;
     private TetrisField tetrisField;
     private PaintPanel paintPanel;
-    private boolean isGameOver = false;
+    private boolean isGameOver;
+    private int delay;
 
 
     public Game() {
-        tetrisFigure = new TetrisFigure();
+        delay = Constants.DELAY;
         tetrisField = new TetrisField(Constants.NUM_OF_CELLS_X, Constants.NUM_OF_CELLS_Y);
-        paintPanel = new PaintPanel(tetrisField, tetrisFigure);
+        paintPanel = new PaintPanel(this);
+        paintPanel.setLayout(null);
+        isGameOver = false;
         setTitle("Tetris");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setBounds(100, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
-        paintPanel.setBackground(Color.white); // define the background color
+        paintPanel.setBackground(Constants.THE_COLOR_OF_GAME_FIELD);
         addKeyListener(new KeyListener(this));
-        add(BorderLayout.CENTER, paintPanel);
+        add(paintPanel);
         setVisible(true);
     }
 
     public void start() {
+        tetrisFigure = new TetrisFigure();
         while (!isGameOver) {
             try {
-                Thread.sleep(Constants.DELAY);
+                Thread.sleep(delay);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -41,13 +45,11 @@ public class Game extends JFrame {
             paintPanel.repaint();
             if (!tetrisField.canFall(tetrisFigure)) {
                 tetrisField.addFigure(tetrisFigure);
-                tetrisFigure = new TetrisFigure();
+                tetrisFigure.create();
+                delay = Constants.DELAY;
                 if(!tetrisField.canFall(tetrisFigure)){
                     isGameOver = true;
-                    System.out.println("Game over");
                 }
-                paintPanel.setTetrisFigure(tetrisFigure);
-                //gameOver = figure.isCrossGround(); // Is there space for a new figure?
             } else
                 tetrisFigure.fall();
         }
@@ -64,4 +66,21 @@ public class Game extends JFrame {
     public PaintPanel getPaintPanel() {
         return paintPanel;
     }
+
+    public boolean isGameOver(){
+        return isGameOver;
+    }
+
+    public int getScore() {
+        return tetrisField.getScore();
+    }
+
+    public void setGameOver(boolean gameOver) {
+        isGameOver = gameOver;
+    }
+
+    public void setDelay(int delay) {
+        this.delay = delay;
+    }
+
 }
